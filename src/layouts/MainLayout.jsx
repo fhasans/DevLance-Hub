@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useThemeStore } from '../store/themeStore';
 import { useProfileStore } from '../store/profileStore';
-import { Moon, Sun, Menu, LayoutDashboard } from 'lucide-react';
+import { Moon, Sun, Menu, LayoutDashboard, Coffee } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 import ProfileSettingsModal from '../components/ProfileSettingsModal';
 import { ALL_TOOLS } from '../store/toolsStore';
@@ -60,6 +60,18 @@ export default function MainLayout() {
             )
           })}
         </nav>
+
+        <div className="p-4 border-t border-border mt-auto">
+          <a 
+            href="https://www.buymeacoffee.com/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl font-bold text-sm bg-[#FFDD00] text-black hover:bg-[#FFDD00]/90 transition-all shadow-sm hover:shadow hover:-translate-y-0.5"
+          >
+            <Coffee className="w-5 h-5" />
+            Buy me a coffee
+          </a>
+        </div>
       </aside>
 
       {/* Main Content */}
