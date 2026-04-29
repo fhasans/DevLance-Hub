@@ -1,17 +1,26 @@
-import { useEffect } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useThemeStore } from '../store/themeStore';
+import { useProfileStore } from '../store/profileStore';
 import { Moon, Sun, Menu, LayoutDashboard } from 'lucide-react';
-import clsx from 'clsx';
+import * as LucideIcons from 'lucide-react';
+import ProfileSettingsModal from '../components/ProfileSettingsModal';
+import { ALL_TOOLS } from '../store/toolsStore';
 
 export default function MainLayout() {
   const { theme, toggleTheme } = useThemeStore();
+  const profile = useProfileStore();
+  const location = useLocation();
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
     root.classList.add(theme);
   }, [theme]);
+
+  // Initial for avatar fallback
+  const getInitial = (name) => name ? name.charAt(0).toUpperCase() : 'U';
 
   return (
     <div className="min-h-screen flex bg-background text-foreground">
@@ -26,12 +35,30 @@ export default function MainLayout() {
           </div>
         </div>
         
-        <nav className="flex-1 px-4 py-4 space-y-2">
-          <Link to="/" className="flex items-center gap-3 px-3 py-2 rounded-md bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors">
+        <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+          <Link to="/" className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${location.pathname === '/' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-secondary/80 hover:text-foreground'}`}>
             <LayoutDashboard className="w-5 h-5" />
             <span className="font-medium">Dashboard</span>
           </Link>
-          {/* Menu items will go here */}
+          
+          <div className="pt-4 pb-1">
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3">Tools</p>
+          </div>
+          
+          {ALL_TOOLS.map(tool => {
+            const Icon = LucideIcons[tool.iconName] || LucideIcons.HelpCircle;
+            const isActive = location.pathname === `/${tool.id}`;
+            return (
+              <Link 
+                key={tool.id}
+                to={`/${tool.id}`} 
+                className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${isActive ? 'bg-secondary text-foreground font-medium' : 'text-muted-foreground hover:bg-secondary/50 hover:text-foreground'}`}
+              >
+                <Icon className={`w-5 h-5 ${isActive ? tool.color : ''}`} />
+                <span className="text-sm">{tool.name}</span>
+              </Link>
+            )
+          })}
         </nav>
       </aside>
 
@@ -57,17 +84,31 @@ export default function MainLayout() {
             >
               {theme === 'dark' ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5 text-slate-700" />}
             </button>
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
-              F
-            </div>
+            
+            <button 
+              onClick={() => setIsProfileModalOpen(true)}
+              className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-md overflow-hidden hover:ring-2 hover:ring-primary hover:ring-offset-2 transition-all"
+              aria-label="Open profile settings"
+            >
+              {profile.avatar && profile.avatar !== '/logo.png' ? (
+                <img src={profile.avatar} alt={profile.name} className="w-full h-full object-cover" />
+              ) : (
+                <span>{getInitial(profile.name)}</span>
+              )}
+            </button>
           </div>
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 overflow-auto p-4 sm:p-6 bg-secondary/20">
+        <div className="flex-1 overflow-auto p-4 sm:p-6 bg-secondary/20 relative">
           <Outlet />
         </div>
       </main>
+
+      <ProfileSettingsModal 
+        isOpen={isProfileModalOpen} 
+        onClose={() => setIsProfileModalOpen(false)} 
+      />
     </div>
   );
 }
