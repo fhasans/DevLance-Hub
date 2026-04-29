@@ -1,11 +1,11 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { Wrench, Clock, LayoutKanban, Regex, Code, Database, FileText, Calendar, CheckSquare, Users } from 'lucide-react';
+import { Wrench, Clock, Kanban, Regex, Code, Database, FileText, Calendar, CheckSquare, Users } from 'lucide-react';
 
 // Centralized tool definitions
 export const ALL_TOOLS = [
   { id: 'time-tracker', name: 'Time Tracker', iconName: 'Clock', color: 'text-blue-500', bg: 'bg-blue-500/10', category: 'freelance' },
-  { id: 'kanban-board', name: 'Kanban Board', iconName: 'LayoutKanban', color: 'text-purple-500', bg: 'bg-purple-500/10', category: 'productivity' },
+  { id: 'kanban-board', name: 'Kanban Board', iconName: 'Kanban', color: 'text-purple-500', bg: 'bg-purple-500/10', category: 'productivity' },
   { id: 'json-formatter', name: 'JSON Formatter', iconName: 'Wrench', color: 'text-orange-500', bg: 'bg-orange-500/10', category: 'developer' },
   { id: 'regex-tester', name: 'Regex Tester', iconName: 'Regex', color: 'text-red-500', bg: 'bg-red-500/10', category: 'developer' },
   { id: 'code-vault', name: 'Code Snippet Vault', iconName: 'Code', color: 'text-green-500', bg: 'bg-green-500/10', category: 'developer' },

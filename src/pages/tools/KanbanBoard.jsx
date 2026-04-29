@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useKanbanStore } from '../../store/kanbanStore';
-import { LayoutKanban, Plus, Trash2, GripVertical } from 'lucide-react';
+import { Kanban, Plus, Trash2, GripVertical } from 'lucide-react';
 
 const COLUMNS = [
   { id: 'todo', title: 'To Do', color: 'bg-slate-500' },
@@ -50,7 +50,7 @@ export default function KanbanBoard() {
     <div className="space-y-6 h-full flex flex-col">
       <div className="flex flex-col gap-2 shrink-0">
         <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-          <LayoutKanban className="w-8 h-8 text-purple-500" /> Kanban Board
+          <Kanban className="w-8 h-8 text-purple-500" /> Kanban Board
         </h1>
         <p className="text-muted-foreground">
           Manage your tasks simply with drag and drop.
